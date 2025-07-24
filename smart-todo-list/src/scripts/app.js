@@ -21,21 +21,20 @@ document.addEventListener('DOMContentLoaded', () => {
         taskItem.textContent = taskText;
 
         const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
+        removeButton.className = 'remove-btn';
+        removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
         removeButton.addEventListener('click', () => {
-            taskList.removeChild(taskItem);
+            // Animate removal
+            taskItem.style.transition = 'opacity 0.4s, transform 0.4s';
+            taskItem.style.opacity = '0';
+            taskItem.style.transform = 'translateX(40px)';
+            setTimeout(() => {
+                taskList.removeChild(taskItem);
+            }, 400);
         });
 
         taskItem.appendChild(removeButton);
         taskList.appendChild(taskItem);
         taskInput.value = '';
-
-        // Call animation function from animation.js
-        animateTaskAddition(taskItem);
-    }
-
-    function animateTaskAddition(taskItem) {
-        // Add animation logic here
-        taskItem.classList.add('fade-in');
     }
 });
