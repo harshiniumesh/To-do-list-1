@@ -18,22 +18,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (taskText === '') return;
 
         const taskItem = document.createElement('li');
-        taskItem.textContent = taskText;
+        taskItem.innerHTML = `<span class="task-text">${taskText}</span>`;
 
-        const removeButton = document.createElement('button');
-        removeButton.className = 'remove-btn';
-        removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        removeButton.addEventListener('click', () => {
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'remove-btn';
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => {
             // Animate removal
-            taskItem.style.transition = 'opacity 0.4s, transform 0.4s';
-            taskItem.style.opacity = '0';
-            taskItem.style.transform = 'translateX(40px)';
+            taskItem.style.animation = 'fade-out-right 0.4s forwards';
             setTimeout(() => {
-                taskList.removeChild(taskItem);
+                if (taskItem.parentNode === taskList) {
+                    taskList.removeChild(taskItem);
+                }
             }, 400);
         });
 
-        taskItem.appendChild(removeButton);
+        taskItem.appendChild(deleteButton);
         taskList.appendChild(taskItem);
         taskInput.value = '';
     }

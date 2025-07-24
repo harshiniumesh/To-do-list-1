@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Task Time</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-clock"></i> Set Task Time</h1>
+        <form class="input-group" id="time-form">
+            <input type="text" id="task-name" placeholder="Task name...">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="time" id="task-time">
+                <select id="ampm" style="min-width:60px;">
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+            </div>
+            <select id="ringtone">
+                <option value="">Select Ringtone</option>
+                <option value="ring1">Classic Bell</option>
+                <option value="ring2">Soft Chime</option>
+                <option value="ring3">Digital Tone</option>
+            </select>
+            <button type="submit" id="set-time-button"><i class="fas fa-check"></i> Set</button>
+        </form>
+        <ul id="time-list"></ul>
+        <a href="index.html" style="display:block;text-align:center;margin-top:24px;color:#6a89cc;text-decoration:none;font-weight:500;">&#8592; Back to To-Do List</a>
+        <a href="time-setter.html" style="display:block;text-align:center;margin-top:24px;color:#6a89cc;text-decoration:none;font-weight:500;">Set Task Time &rarr;</a>
+        <button onclick="document.getElementById('ring1').play()">Test Sound</button>
+    </div>
+    <audio id="ring1" src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b8e82.mp3"></audio>
+    <audio id="ring2" src="https://cdn.pixabay.com/audio/2022/03/15/audio_116b9b8e82.mp3"></audio>
+    <audio id="ring3" src="https://cdn.pixabay.com/audio/2022/03/15/audio_117b9b8e82.mp3"></audio>
+    <script>
+        const form = document.getElementById('time-form');
+        const timeList = document.getElementById('time-list');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('task-name').value.trim();
+            const time = document.getElementById('task-time').value;
+            const ampm = document.getElementById('ampm').value;
+            const ringtone = document.getElementById('ringtone').value;
+            if (!name || !time || !ringtone || !ampm) return;
+
+            // Convert time to 24-hour format based on AM/PM
+            let [hours, minutes] = time.split(':');
+            hours = parseInt(hours, 10);
+            if (ampm === 'PM' && hours < 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+
+            // Check if the selected time is for today
+            const now = new Date();
+            const selected = new Date();
+            selected.setHours(hours, minutes, 0, 0);
+
+            if (
+                now.getFullYear() !== selected.getFullYear() ||
+                now.getMonth() !== selected.getMonth() ||
+                now.getDate() !== selected.getDate()
+            ) {
+                alert('Please select a time for today.');
+                return;
+            }
+
+            const li = document.createElement('li');
+            li.textContent = `${name} - ${("0"+(hours%12||12)).slice(-2)}:${minutes} ${ampm} (${document.getElementById('ringtone').selectedOptions[0].text})`;
+            timeList.appendChild(li);
+
+            // Play ringtone preview
+            const audio = document.getElementById(ringtone);
+            if (audio) {
+                audio.muted = false;
+                audio.volume = 1;
+                audio.currentTime = 0;
+                audio.play();
+            }
+            form.reset();
+        });
+    </script>
+</body>
+</html>
