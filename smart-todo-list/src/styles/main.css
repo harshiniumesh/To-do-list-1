@@ -73,7 +73,7 @@ h1 {
 }
 
 #task-list li {
-    background: linear-gradient(90deg, #f8ffae 0%, #43c6ac 100%);
+    background: linear-gradient(90deg, #282726 0%, #43c4c6 100%);
     color: #191654;
     margin-bottom: 16px;
     padding: 14px 18px;
@@ -98,7 +98,7 @@ h1 {
 .remove-btn {
     background: none;
     border: none;
-    color: #ff6b6b;
+    color: #aa4d78;
     font-size: 1.2rem;
     cursor: pointer;
     transition: color 0.2s, transform 0.2s;
